@@ -73,6 +73,8 @@ void ALMADefaultCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &ALMADefaultCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ALMADefaultCharacter::MoveRight);
+	PlayerInputComponent->BindAction("ZoomPlus", IE_Pressed, this, &ALMADefaultCharacter::ZoomPlus);
+	PlayerInputComponent->BindAction("ZoomMinus", IE_Pressed, this, &ALMADefaultCharacter::ZoomMinus);
 
 }
 
@@ -86,3 +88,39 @@ void ALMADefaultCharacter::MoveRight(float Value)
 	AddMovementInput(GetActorRightVector(), Value);
 }
 
+void ALMADefaultCharacter::ZoomPlus()
+{
+	for (int i = 0; i < 3; ++i)
+	{
+		if (ZoomMode <= 0)
+			ZoomMode -= 0.2;
+		else
+			ZoomMode = 0;
+
+		ArmLength += ZoomMode;
+		if (ArmLength <= MinArmLength)
+		{
+			ArmLength = MinArmLength;
+		}
+		SpringArmComponent->TargetArmLength = ArmLength;
+	}
+}
+
+void ALMADefaultCharacter::ZoomMinus()
+{
+	for (int i = 0; i < 3; ++i)
+	{
+		if (ZoomMode >= 0)
+			ZoomMode += 0.2;
+		else
+			ZoomMode = 0;
+
+		ArmLength += ZoomMode;
+
+		if (ArmLength >= MaxArmLength)
+		{
+			ArmLength = MaxArmLength;
+		}
+		SpringArmComponent->TargetArmLength = ArmLength;
+	}
+}

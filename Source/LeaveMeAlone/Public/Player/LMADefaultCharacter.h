@@ -29,6 +29,12 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	UCameraComponent* CameraComponent;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpringArmComponent")
+	float MinArmLength = 900.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpringArmComponent")
+	float MaxArmLength = 1900.0f;
+
 	UPROPERTY()
 	UDecalComponent* CurrentCursor = nullptr;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cursor")
@@ -41,9 +47,15 @@ private:
 	float ArmLength = 1400.0f;
 	float FOV = 55.0f;
 
+	float ZoomMode = 0.0f;
+
 	void MoveForward(float Value);
 
 	void MoveRight(float Value);
+
+	void ZoomPlus();
+
+	void ZoomMinus();
 
 public:	
 	// Called every frame
