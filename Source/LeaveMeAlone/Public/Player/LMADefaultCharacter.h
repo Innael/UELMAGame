@@ -30,10 +30,13 @@ protected:
 	UCameraComponent* CameraComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpringArmComponent")
-	float MinArmLength = 900.0f;
+	float MinArmLength = 500.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpringArmComponent")
-	float MaxArmLength = 1900.0f;
+	float MaxArmLength = 2000.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpringArmComponent")
+	float ZoomSmoothness = 0.5f;
 
 	UPROPERTY()
 	UDecalComponent* CurrentCursor = nullptr;

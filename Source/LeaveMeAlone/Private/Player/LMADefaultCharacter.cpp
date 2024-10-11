@@ -89,11 +89,9 @@ void ALMADefaultCharacter::MoveRight(float Value)
 }
 
 void ALMADefaultCharacter::ZoomPlus()
-{
-	for (int i = 0; i < 3; ++i)
-	{
+{	
 		if (ZoomMode <= 0)
-			ZoomMode -= 0.2;
+			ZoomMode -= ZoomSmoothness;
 		else
 			ZoomMode = 0;
 
@@ -102,16 +100,13 @@ void ALMADefaultCharacter::ZoomPlus()
 		{
 			ArmLength = MinArmLength;
 		}
-		SpringArmComponent->TargetArmLength = ArmLength;
-	}
+		SpringArmComponent->TargetArmLength = ArmLength;	
 }
 
 void ALMADefaultCharacter::ZoomMinus()
-{
-	for (int i = 0; i < 3; ++i)
-	{
+{	
 		if (ZoomMode >= 0)
-			ZoomMode += 0.2;
+			ZoomMode += ZoomSmoothness;
 		else
 			ZoomMode = 0;
 
@@ -122,5 +117,4 @@ void ALMADefaultCharacter::ZoomMinus()
 			ArmLength = MaxArmLength;
 		}
 		SpringArmComponent->TargetArmLength = ArmLength;
-	}
 }
