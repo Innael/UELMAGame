@@ -8,6 +8,8 @@
 
 class UCameraComponent;
 class USpringArmComponent;
+class ULMAHealthComponent;
+class UAnimMontage;
 
 
 UCLASS()
@@ -19,9 +21,11 @@ public:
 	// Sets default values for this character's properties
 	ALMADefaultCharacter();
 
+	UFUNCTION()
+	ULMAHealthComponent* GetHealthComponent() const { return HealthComponent; }
+
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	// Called when the game starts or when spawned	
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	USpringArmComponent* SpringArmComponent;
@@ -45,6 +49,16 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cursor")
 	FVector CursorSize = FVector(20.0f, 40.0f, 40.0f);
 
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components|Health")
+	ULMAHealthComponent* HealthComponent;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Animation")
+	UAnimMontage* DeathMontage;
+
+	virtual void BeginPlay() override;
+	
+
 private:
 	float YRotation = -75.0f;
 	float ArmLength = 1400.0f;
@@ -59,6 +73,12 @@ private:
 	void ZoomPlus();
 
 	void ZoomMinus();
+
+	void OnDeath();
+
+	void OnHealthChanged(float NewHealth);
+
+	void RotationPlayerOnCursor();
 
 public:	
 	// Called every frame
