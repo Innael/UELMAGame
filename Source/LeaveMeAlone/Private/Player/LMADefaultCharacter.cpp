@@ -63,6 +63,28 @@ void ALMADefaultCharacter::Tick(float DeltaTime)
 	{
 		RotationPlayerOnCursor();
 	}
+
+	if (Stamina > 10)
+	{		
+		if (SprintCheck)
+		{
+			Stamina = FMath::Clamp(Stamina - 1, 0.0f, MaxStamina);
+		}		
+	}
+	else
+	{
+		if (SprintCheck)
+		{
+			SprintCheck = false;
+			GetCharacterMovement()->MaxWalkSpeed = 300;
+		}
+	}
+	
+
+	if (!SprintCheck && Stamina < MaxStamina)
+	{
+		Stamina += 1;
+	}
 }
 
 
@@ -75,16 +97,28 @@ void ALMADefaultCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 	PlayerInputComponent->BindAxis("MoveRight", this, &ALMADefaultCharacter::MoveRight);
 	PlayerInputComponent->BindAction("ZoomPlus", IE_Pressed, this, &ALMADefaultCharacter::ZoomPlus);
 	PlayerInputComponent->BindAction("ZoomMinus", IE_Pressed, this, &ALMADefaultCharacter::ZoomMinus);
+	PlayerInputComponent->BindAction("SprintStart", IE_Pressed, this, &ALMADefaultCharacter::SprintStart);
+	PlayerInputComponent->BindAction("SprintStop", IE_Released, this, &ALMADefaultCharacter::SprintStop);
 
 }
 
 void ALMADefaultCharacter::MoveForward(float Value)
-{
+{	
+	if (SprintCheck && Value < 0)
+	{
+		SprintCheck = false;
+		GetCharacterMovement()->MaxWalkSpeed = 300;
+	}
 	AddMovementInput(GetActorForwardVector(), Value);
 }
 
 void ALMADefaultCharacter::MoveRight(float Value)
 {
+	if (SprintCheck && Value != 0)
+	{
+		SprintCheck = false;
+		GetCharacterMovement()->MaxWalkSpeed = 300;
+	}
 	AddMovementInput(GetActorRightVector(), Value);
 }
 
@@ -152,4 +186,23 @@ void ALMADefaultCharacter::RotationPlayerOnCursor()
 void ALMADefaultCharacter::OnHealthChanged(float NewHealth)
 {
 	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, FString::Printf(TEXT("Health = %f"), NewHealth));
+}
+
+
+void ALMADefaultCharacter::SprintStart() 
+{
+	if (Stamina > 10)
+	{
+		SprintCheck = true;
+		GetCharacterMovement()->MaxWalkSpeed = 600;
+	}
+	else
+		SprintCheck = false;
+
+}
+
+void ALMADefaultCharacter::SprintStop()
+{
+	SprintCheck = false;
+	GetCharacterMovement()->MaxWalkSpeed = 300;
 }

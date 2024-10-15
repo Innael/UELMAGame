@@ -42,6 +42,12 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpringArmComponent")
 	float ZoomSmoothness = 0.5f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "StaminaComponent")
+	float MaxStamina = 100.0f;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Sprint")
+	bool SprintCheck = false;
+
 	UPROPERTY()
 	UDecalComponent* CurrentCursor = nullptr;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cursor")
@@ -66,6 +72,8 @@ private:
 
 	float ZoomMode = 0.0f;
 
+	float Stamina = 100.0f;	
+
 	void MoveForward(float Value);
 
 	void MoveRight(float Value);
@@ -79,6 +87,10 @@ private:
 	void OnHealthChanged(float NewHealth);
 
 	void RotationPlayerOnCursor();
+
+	void SprintStart();
+
+	void SprintStop();
 
 public:	
 	// Called every frame
