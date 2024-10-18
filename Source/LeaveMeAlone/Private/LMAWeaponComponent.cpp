@@ -45,6 +45,7 @@ void ULMAWeaponComponent::SpawnWeapon()
 		{
 			FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, false);
 			Weapon->AttachToComponent(Character->GetMesh(), AttachmentRules, WeaponSocketName);
+			Weapon->ForcedRecharge.AddUObject(this, &ULMAWeaponComponent::ForcedRecharge);
 		}
 	}
 }
@@ -96,10 +97,21 @@ bool ULMAWeaponComponent::CanReload() const
 
 void ULMAWeaponComponent::Reload()
 {
+	if (Weapon->CheckIfTheClipIsFull() != true)
+		ReloadMechanics();
+}
+
+void ULMAWeaponComponent::ReloadMechanics()
+{
 	if (!CanReload())
 		return;
-	Weapon->ChangeClip();
-	AnimReloading = true;
+	Weapon->ChangeClip();	
 	ACharacter* Character = Cast<ACharacter>(GetOwner());
 	Character->PlayAnimMontage(ReloadMontage);
+	AnimReloading = true;
+}
+
+void ULMAWeaponComponent::ForcedRecharge() 
+{
+	ReloadMechanics();
 }

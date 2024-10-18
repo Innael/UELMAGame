@@ -8,6 +8,8 @@
 
 class USkeletalMeshComponent;
 
+DECLARE_MULTICAST_DELEGATE(FForcedRecharge)
+
 USTRUCT(BlueprintType)
 struct FAmmoWeapon
 {
@@ -31,11 +33,15 @@ public:
 	// Sets default values for this actor's properties
 	ALMABaseWeapon();
 
+	FForcedRecharge ForcedRecharge;
+
 	void Fire();
 
 	void FireOff();
 
 	void ChangeClip();
+
+	bool CheckIfTheClipIsFull();
 
 protected:
 	
