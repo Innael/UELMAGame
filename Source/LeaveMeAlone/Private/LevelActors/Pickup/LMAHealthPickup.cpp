@@ -22,7 +22,7 @@ ALMAHealthPickup::ALMAHealthPickup()
 void ALMAHealthPickup::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame
