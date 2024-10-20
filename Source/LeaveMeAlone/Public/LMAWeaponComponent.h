@@ -9,6 +9,8 @@
 class ALMABaseWeapon;
 class UAnimMontage;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FShowCurrentAmmo, int32, CurrAmmo);
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class LEAVEMEALONE_API ULMAWeaponComponent : public UActorComponent
 {
@@ -18,14 +20,21 @@ public:
 	// Sets default values for this component's properties
 	ULMAWeaponComponent();
 
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
+	FShowCurrentAmmo ShowCurrentAmmo;
+
 	void Fire();
 
+	UFUNCTION(BlueprintCallable)
 	void FireOff();
 
 	void Reload();
 
 protected:
 	// Called when the game starts
+
+	UPROPERTY()
+	ALMABaseWeapon* Weapon = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	TSubclassOf<ALMABaseWeapon> WeaponClass;
@@ -40,10 +49,11 @@ protected:
 
 
 private:
-	UPROPERTY()
-	ALMABaseWeapon* Weapon = nullptr;
+	
 
 	bool AnimReloading = false;
+
+	int32 CurrAmmo = 30;
 
 	void SpawnWeapon();
 
@@ -56,6 +66,8 @@ private:
 	void ReloadMechanics();
 
 	void ForcedRecharge();
+
+	void ShowAmmo();
 
 public:	
 	// Called every frame

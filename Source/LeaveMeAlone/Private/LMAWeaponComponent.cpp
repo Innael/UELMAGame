@@ -46,6 +46,7 @@ void ULMAWeaponComponent::SpawnWeapon()
 			FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, false);
 			Weapon->AttachToComponent(Character->GetMesh(), AttachmentRules, WeaponSocketName);
 			Weapon->ForcedRecharge.AddUObject(this, &ULMAWeaponComponent::ForcedRecharge);
+			Weapon->AmmoChange.AddUObject(this, &ULMAWeaponComponent::ShowAmmo);
 		}
 	}
 }
@@ -75,7 +76,7 @@ void ULMAWeaponComponent::InitAnimNotify()
 		auto ReloadFinish = Cast<ULMAReloadFinishedAnimNotify>(NotifyEvent.Notify);
 		if (ReloadFinish)
 		{
-			ReloadFinish->OnNotifyReloadFinished.AddUObject(this, &ULMAWeaponComponent::OnNotifyReloadFinished);
+			ReloadFinish->OnNotifyReloadFinished.AddUObject(this, &ULMAWeaponComponent::OnNotifyReloadFinished);			
 			break;
 		}
 	}
@@ -87,6 +88,7 @@ void ULMAWeaponComponent::OnNotifyReloadFinished(USkeletalMeshComponent* Skeleta
 	if (Character->GetMesh() == SkeletalMesh)
 	{
 		AnimReloading = false;
+		Weapon->ReloadStatus = false;
 	}
 }
 
@@ -105,13 +107,21 @@ void ULMAWeaponComponent::ReloadMechanics()
 {
 	if (!CanReload())
 		return;
+	Weapon->ReloadStatus = true;
 	Weapon->ChangeClip();	
 	ACharacter* Character = Cast<ACharacter>(GetOwner());
 	Character->PlayAnimMontage(ReloadMontage);
 	AnimReloading = true;
+	ShowAmmo();
 }
 
 void ULMAWeaponComponent::ForcedRecharge() 
 {
 	ReloadMechanics();
+}
+
+void ULMAWeaponComponent::ShowAmmo()
+{
+	CurrAmmo = Weapon->GetCurrentAmmoWeapon().Bullets;
+	ShowCurrentAmmo.Broadcast(CurrAmmo);
 }

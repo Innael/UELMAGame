@@ -38,6 +38,7 @@ void ULMAHealthComponent::OnTakeAnyDamage(
 
 	Health = FMath::Clamp(Health - Damage, 0.0f, MaxHealth);
 	OnHealthChanged.Broadcast(Health);
+	UpdateHealthBar.Broadcast(Health / MaxHealth);
 
 	if (IsDead())
 	{
@@ -62,5 +63,6 @@ bool ULMAHealthComponent::AddHealth(float NewHealth)
 		return false;
 	Health = FMath::Clamp(Health + NewHealth, 0.0f, MaxHealth);
 	OnHealthChanged.Broadcast(Health);
+	UpdateHealthBar.Broadcast(Health / MaxHealth);
 	return true;
 }

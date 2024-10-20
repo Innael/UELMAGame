@@ -9,6 +9,8 @@
 class USkeletalMeshComponent;
 
 DECLARE_MULTICAST_DELEGATE(FForcedRecharge)
+DECLARE_MULTICAST_DELEGATE(FAmmoChange)
+
 
 USTRUCT(BlueprintType)
 struct FAmmoWeapon
@@ -34,6 +36,7 @@ public:
 	ALMABaseWeapon();
 
 	FForcedRecharge ForcedRecharge;
+	FAmmoChange AmmoChange;
 
 	void Fire();
 
@@ -42,6 +45,10 @@ public:
 	void ChangeClip();
 
 	bool CheckIfTheClipIsFull();
+
+	bool ReloadStatus = false;
+
+	FAmmoWeapon GetCurrentAmmoWeapon() const { return CurrentAmmoWeapon; }
 
 protected:
 	
@@ -68,6 +75,8 @@ protected:
 	void DecrementBullets();
 
 	bool IsCurrentClipEmpty() const;
+
+	FString CurrAmmo = "30";
 	
 
 private:

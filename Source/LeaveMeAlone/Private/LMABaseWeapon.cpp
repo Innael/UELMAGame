@@ -45,7 +45,7 @@ void ALMABaseWeapon::FireOff()
 
 void ALMABaseWeapon::Shoot()
 {
-	if (IsCurrentClipEmpty())
+	if (IsCurrentClipEmpty() || ReloadStatus)
 		return;
 	const FTransform SocketTransform = SkMeshWeaponComponent->GetSocketTransform(MuzzleSocketName);
 	const FVector TraceStart = SocketTransform.GetLocation();
@@ -63,7 +63,7 @@ void ALMABaseWeapon::Shoot()
 
 void ALMABaseWeapon::ChangeClip()
 {
-	CurrentAmmoWeapon.Bullets = DefaultAmmoWeapon.Bullets;
+	CurrentAmmoWeapon.Bullets = DefaultAmmoWeapon.Bullets;	
 }
 
 bool ALMABaseWeapon::IsCurrentClipEmpty() const
@@ -74,7 +74,7 @@ bool ALMABaseWeapon::IsCurrentClipEmpty() const
 void ALMABaseWeapon::DecrementBullets()
 {
 	CurrentAmmoWeapon.Bullets--;
-	UE_LOG(LogWeapon, Display, TEXT("Bullets = %s"), *FString::FromInt(CurrentAmmoWeapon.Bullets));
+	AmmoChange.Broadcast();
 	if (IsCurrentClipEmpty())
 	{
 		ForcedRecharge.Broadcast();
