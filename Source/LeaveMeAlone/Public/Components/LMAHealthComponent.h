@@ -9,6 +9,7 @@
 DECLARE_MULTICAST_DELEGATE(FOnDeath)
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnHealthChanged, float);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUpdateHealthBar, float, Procent);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FRunLoseMenu);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class LEAVEMEALONE_API ULMAHealthComponent : public UActorComponent
@@ -29,13 +30,13 @@ public:
 	FOnHealthChanged OnHealthChanged;
 
 	UPROPERTY(BlueprintAssignable, BlueprintCallable)
+	FRunLoseMenu RunLoseMenu;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
 	FUpdateHealthBar UpdateHealthBar;
 
 	bool AddHealth(float NewHealth);
 	bool IsHealthFull() const;
-
-	
-	
 
 
 protected:

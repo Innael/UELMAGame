@@ -43,6 +43,7 @@ void ULMAHealthComponent::OnTakeAnyDamage(
 	if (IsDead())
 	{
 		OnDeath.Broadcast();
+		RunLoseMenu.Broadcast();
 	}
 }
 

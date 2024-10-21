@@ -23,7 +23,7 @@ public:
 	ALMADefaultCharacter();
 
 	UFUNCTION()
-	ULMAHealthComponent* GetHealthComponent() const { return HealthComponent; }
+	ULMAHealthComponent* GetHealthComponent() const { return HealthComponent; }	
 
 protected:
 	// Called when the game starts or when spawned	
