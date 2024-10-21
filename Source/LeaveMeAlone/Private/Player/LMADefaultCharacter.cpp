@@ -54,6 +54,7 @@ void ALMADefaultCharacter::BeginPlay()
 	
 	OnHealthChanged(HealthComponent->GetHealth());
 	HealthComponent->OnDeath.AddUObject(this, &ALMADefaultCharacter::OnDeath);
+	HealthComponent->OnDeath.AddUObject(this, &ALMADefaultCharacter::StopUnnecessaryFire);
 	HealthComponent->OnHealthChanged.AddUObject(this, &ALMADefaultCharacter::OnHealthChanged);
 }
 
@@ -172,6 +173,13 @@ void ALMADefaultCharacter::OnDeath()
 		Controller->ChangeState(NAME_Spectating);
 	}
 }
+
+
+void ALMADefaultCharacter::StopUnnecessaryFire()
+{
+	WeaponComponent->FireOff();
+}
+
 
 void ALMADefaultCharacter::RotationPlayerOnCursor()
 {

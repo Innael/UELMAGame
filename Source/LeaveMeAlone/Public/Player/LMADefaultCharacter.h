@@ -88,6 +88,8 @@ private:
 
 	void OnDeath();
 
+	void StopUnnecessaryFire();
+
 	void OnHealthChanged(float NewHealth);
 
 	void RotationPlayerOnCursor();
