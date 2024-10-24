@@ -7,6 +7,8 @@
 #include "LMABaseWeapon.generated.h"
 
 class USkeletalMeshComponent;
+class USoundWave;
+class UNiagaraSystem;
 
 DECLARE_MULTICAST_DELEGATE(FForcedRecharge)
 DECLARE_MULTICAST_DELEGATE(FAmmoChange)
@@ -66,7 +68,18 @@ protected:
 
 	FTimerHandle ShootPeriodTimer;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
 	float ShootPeriod = 0.3f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
+	USoundWave* ShootWave;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
+	UNiagaraSystem* TraceEffect;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
+	FString TraceName = "Tracer";
+	
 
 	virtual void BeginPlay() override;
 
@@ -74,13 +87,15 @@ protected:
 
 	void DecrementBullets();
 
-	bool IsCurrentClipEmpty() const;
+	bool IsCurrentClipEmpty() const;	
 
 	FString CurrAmmo = "30";
 	
 
 private:
 	FAmmoWeapon CurrentAmmoWeapon;
+
+	void SpawnTrace(const FVector& TraceStart, const FVector& TraceEnd);
 
 public:	
 	// Called every frame
