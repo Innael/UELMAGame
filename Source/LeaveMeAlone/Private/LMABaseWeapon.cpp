@@ -48,13 +48,12 @@ void ALMABaseWeapon::FireOff()
 
 void ALMABaseWeapon::Shoot()
 {
-	if (IsCurrentClipEmpty() || ReloadStatus)
+	if (IsCurrentClipEmpty() || ReloadStatus || CurrentAmmoWeapon.Bullets < CartridgeConsumption)
 		return;
 	const FTransform SocketTransform = SkMeshWeaponComponent->GetSocketTransform(MuzzleSocketName);
 	const FVector TraceStart = SocketTransform.GetLocation();
 	const FVector ShootDirection = SocketTransform.GetRotation().GetForwardVector();
 	const FVector TraceEnd = TraceStart + ShootDirection * TraceDistance;
-	//DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Black, false, 1.0f, 0, 2.0f);	
 	FHitResult HitResult;
 	GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ECollisionChannel::ECC_Visibility);
 	FVector TracerEnd = TraceEnd;
@@ -65,7 +64,25 @@ void ALMABaseWeapon::Shoot()
 	}
 
 	SpawnTrace(TraceStart, TracerEnd);
-	UGameplayStatics::PlaySoundAtLocation(GetWorld(), ShootWave, TraceStart);
+
+	switch (FireMode)
+	{
+	    case 1:
+	    {
+		    UGameplayStatics::PlaySoundAtLocation(GetWorld(), ShootWave, TraceStart);
+		    break;
+	    }
+		case 2:
+		{
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), ShootWaveTwo, TraceStart);
+			break;
+		}
+		case 3:
+		{
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), ShootWaveThree, TraceStart);
+			break;
+		}
+	}
 
 	DecrementBullets();
 }
@@ -77,17 +94,17 @@ void ALMABaseWeapon::ChangeClip()
 
 bool ALMABaseWeapon::IsCurrentClipEmpty() const
 {
-	return CurrentAmmoWeapon.Bullets == 0;
+	return CurrentAmmoWeapon.Bullets <= 0;
 }
 
 void ALMABaseWeapon::DecrementBullets()
 {
-	CurrentAmmoWeapon.Bullets--;
-	AmmoChange.Broadcast();
+	CurrentAmmoWeapon.Bullets -= CartridgeConsumption;
 	if (IsCurrentClipEmpty())
 	{
 		ForcedRecharge.Broadcast();
-	}	
+	}
+	AmmoChange.Broadcast();
 }
 
 bool ALMABaseWeapon::CheckIfTheClipIsFull() 
@@ -100,9 +117,54 @@ bool ALMABaseWeapon::CheckIfTheClipIsFull()
 
 void ALMABaseWeapon::SpawnTrace(const FVector& TraceStart, const FVector& TraceEnd)
 {
-	const auto TraceFX = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), TraceEffect, TraceStart);
-	if (TraceFX)
+	switch (FireMode)
 	{
-		TraceFX->SetNiagaraVariableVec3(TraceName, TraceEnd);
+	case 1:
+	{
+		const auto TraceFX = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), TraceEffect, TraceStart);
+		if (TraceFX)
+		{
+			TraceFX->SetNiagaraVariableVec3(TraceName, TraceEnd);
+		}
 	}
+	case 2:
+	{
+		const auto TraceFX = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), TraceEffectTwo, TraceStart);
+		if (TraceFX)
+		{
+			TraceFX->SetNiagaraVariableVec3(TraceName, TraceEnd);
+		}
+	}
+	case 3:
+	{
+		const auto TraceFX = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), TraceEffectThree, TraceStart);
+		if (TraceFX)
+		{
+			TraceFX->SetNiagaraVariableVec3(TraceName, TraceEnd);
+		}
+	}
+	}
+}
+
+void ALMABaseWeapon::SetFireMode(int32 Value)
+{
+	FireMode += Value;
+	if (FireMode < 1)
+		FireMode = 3;
+	else if (FireMode > 3)
+		FireMode = 1;
+
+	switch (FireMode)
+	{
+	case 1:
+		CartridgeConsumption = 1;
+		break;
+	case 2:
+		CartridgeConsumption = 3;
+		break;
+	case 3:
+		CartridgeConsumption = 6;
+		break;
+	}
+		
 }

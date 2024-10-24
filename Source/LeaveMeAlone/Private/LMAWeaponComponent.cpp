@@ -125,3 +125,8 @@ void ULMAWeaponComponent::ShowAmmo()
 	CurrAmmo = Weapon->GetCurrentAmmoWeapon().Bullets;
 	ShowCurrentAmmo.Broadcast(CurrAmmo);
 }
+
+void ULMAWeaponComponent::ChangeWeaponMode(int32 Value)
+{
+	Weapon->SetFireMode(Value);
+}

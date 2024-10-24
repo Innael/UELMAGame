@@ -30,6 +30,8 @@ public:
 
 	void Reload();
 
+	void ChangeWeaponMode(int32 Value);
+
 protected:
 	// Called when the game starts
 

@@ -98,6 +98,10 @@ private:
 
 	void SprintStop();
 
+	void FireModePlus();
+
+	void FireModeMinus();
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

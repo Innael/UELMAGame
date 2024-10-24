@@ -106,7 +106,8 @@ void ALMADefaultCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, WeaponComponent, &ULMAWeaponComponent::Fire);
 	PlayerInputComponent->BindAction("Fire", IE_Released, WeaponComponent, &ULMAWeaponComponent::FireOff);
 	PlayerInputComponent->BindAction("Reload", IE_Pressed, WeaponComponent, &ULMAWeaponComponent::Reload);
-
+	PlayerInputComponent->BindAction("FireModeMinus", IE_Pressed, this, &ALMADefaultCharacter::FireModeMinus);
+	PlayerInputComponent->BindAction("FireModePlus", IE_Pressed, this, &ALMADefaultCharacter::FireModePlus);
 }
 
 void ALMADefaultCharacter::MoveForward(float Value)
@@ -220,3 +221,14 @@ void ALMADefaultCharacter::SprintStop()
 	SprintCheck = false;
 	GetCharacterMovement()->MaxWalkSpeed = 300;
 }
+
+void ALMADefaultCharacter::FireModeMinus()
+{
+	WeaponComponent->ChangeWeaponMode(-1);
+}
+
+void ALMADefaultCharacter::FireModePlus() 
+{
+	WeaponComponent -> ChangeWeaponMode(1);
+}
+
