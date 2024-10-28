@@ -128,5 +128,6 @@ void ULMAWeaponComponent::ShowAmmo()
 
 void ULMAWeaponComponent::ChangeWeaponMode(int32 Value)
 {
-	Weapon->SetFireMode(Value);
+	Weapon->SetFireMode(Value);	
+	FireModeChanged.Broadcast(Weapon->FireMode);
 }

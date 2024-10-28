@@ -10,6 +10,7 @@ class ALMABaseWeapon;
 class UAnimMontage;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FShowCurrentAmmo, int32, CurrAmmo);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FFireModeChanged, int32, FMode);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class LEAVEMEALONE_API ULMAWeaponComponent : public UActorComponent
@@ -22,6 +23,11 @@ public:
 
 	UPROPERTY(BlueprintAssignable, BlueprintCallable)
 	FShowCurrentAmmo ShowCurrentAmmo;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
+	FFireModeChanged FireModeChanged;
+
+	
 
 	void Fire();
 
@@ -46,6 +52,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	UAnimMontage* ReloadMontage;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
+	int32 FireMode = 1;
 
 	virtual void BeginPlay() override;
 

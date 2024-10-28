@@ -55,7 +55,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
 	int32 FireMode = 1;
 
-	void SetFireMode(int32 Value);
+	void SetFireMode(int32 Value);	
 
 protected:
 	

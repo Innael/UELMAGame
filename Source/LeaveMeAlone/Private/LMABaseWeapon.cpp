@@ -152,7 +152,7 @@ void ALMABaseWeapon::SetFireMode(int32 Value)
 	if (FireMode < 1)
 		FireMode = 3;
 	else if (FireMode > 3)
-		FireMode = 1;
+		FireMode = 1;	
 
 	switch (FireMode)
 	{
