@@ -55,7 +55,17 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
 	int32 FireMode = 1;
 
-	void SetFireMode(int32 Value);	
+	enum FireModeDamage
+	{
+		FMD1 = 10,
+		FMD2 = 20,
+		FMD3 = 30
+	};
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
+	float Damage = FMD1;
+
+	void SetFireMode(int32 Value);		
 
 protected:
 	
@@ -96,6 +106,10 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
 	FString TraceName = "Tracer";
+
+	FString CurrAmmo = "30";
+
+	int CartridgeConsumption = 1;
 	
 
 	virtual void BeginPlay() override;
@@ -104,11 +118,10 @@ protected:
 
 	void DecrementBullets();
 
-	bool IsCurrentClipEmpty() const;	
+	bool IsCurrentClipEmpty() const;
 
-	FString CurrAmmo = "30";
-
-	int CartridgeConsumption = 1;
+	
+   void MakeDamage(const FHitResult& HitResult);	
 	
 
 private:

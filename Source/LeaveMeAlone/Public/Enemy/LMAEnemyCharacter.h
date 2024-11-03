@@ -8,6 +8,7 @@
 
 class ULMAHealthComponent;
 class UBehaviorTree;
+class UAnimMontage;
 
 UCLASS()
 class LEAVEMEALONE_API ALMAEnemyCharacter : public ACharacter
@@ -26,7 +27,10 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
-	ULMAHealthComponent* HealthComponent;	
+	ULMAHealthComponent* HealthComponent;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Animation")
+	UAnimMontage* DeathMontage;
 
 public:	
 	// Called every frame

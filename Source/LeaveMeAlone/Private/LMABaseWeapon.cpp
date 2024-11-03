@@ -60,6 +60,7 @@ void ALMABaseWeapon::Shoot()
 
 	if (HitResult.bBlockingHit)
 	{
+		MakeDamage(HitResult);
 		TracerEnd = HitResult.ImpactPoint;
 	}
 
@@ -158,13 +159,30 @@ void ALMABaseWeapon::SetFireMode(int32 Value)
 	{
 	case 1:
 		CartridgeConsumption = 1;
+		Damage = FMD1;
 		break;
 	case 2:
 		CartridgeConsumption = 3;
+		Damage = FMD2;
 		break;
 	case 3:
 		CartridgeConsumption = 6;
+		Damage = FMD3;
 		break;
 	}
 		
+}
+
+void ALMABaseWeapon::MakeDamage(const FHitResult& HitResult)
+{
+	const auto Enemy = HitResult.GetActor();
+	if (!Enemy)
+		return;
+	const auto Pawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	if (!Pawn)
+		return;
+	const auto Controller = Pawn->GetController<APlayerController>();
+	if (!Controller)
+		return;
+	Enemy->TakeDamage(Damage, FDamageEvent(), Controller, this);
 }
