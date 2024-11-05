@@ -115,8 +115,9 @@ void ALMADefaultCharacter::MoveForward(float Value)
 	if (SprintCheck && Value < 0)
 	{
 		SprintCheck = false;
-		GetCharacterMovement()->MaxWalkSpeed = 300;
+		GetCharacterMovement()->MaxWalkSpeed = 100;
 	}
+
 	AddMovementInput(GetActorForwardVector(), Value);
 }
 
