@@ -20,11 +20,11 @@ struct FAmmoWeapon
 	GENERATED_USTRUCT_BODY()
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
-	int32 Bullets;
+	int32 Bullets = 30;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
-	int32 Clips;
+	int32 Clips = 5;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
-	bool Infinite;
+	bool Infinite = true;
 };
 
 
