@@ -38,12 +38,14 @@ public:
 	bool AddHealth(float NewHealth);
 	bool IsHealthFull() const;
 
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	float MaxHealth = 100.0f;
+
 
 protected:
 	// Called when the game starts
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	float MaxHealth = 100.0f;
 
 	virtual void BeginPlay() override;
 
