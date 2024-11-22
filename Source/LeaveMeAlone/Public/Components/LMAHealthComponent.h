@@ -42,6 +42,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	float MaxHealth = 100.0f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float DamageAbsorption = 0.0f;
+
 
 protected:
 	// Called when the game starts
