@@ -33,9 +33,11 @@ public:
 	FRunLoseMenu RunLoseMenu;
 
 	UPROPERTY(BlueprintAssignable, BlueprintCallable)
-	FUpdateHealthBar UpdateHealthBar;
+	FUpdateHealthBar UpdateHealthBar;	
 
+	UFUNCTION(BlueprintCallable)
 	bool AddHealth(float NewHealth);
+
 	bool IsHealthFull() const;
 
 	
