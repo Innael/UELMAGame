@@ -36,6 +36,10 @@ void ULMAHealthComponent::OnTakeAnyDamage(
 {
 	if(IsDead()) return;
 
+	Damage -= DamageAbsorption;
+	if (Damage < 0)
+		Damage = 0;
+
 	Health = FMath::Clamp(Health - Damage, 0.0f, MaxHealth);
 	OnHealthChanged.Broadcast(Health);
 	UpdateHealthBar.Broadcast(Health / MaxHealth);
