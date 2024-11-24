@@ -38,6 +38,8 @@ public:
 
 	void ChangeWeaponMode(int32 Value);
 
+	void LightOnOff();
+
 protected:
 	// Called when the game starts
 

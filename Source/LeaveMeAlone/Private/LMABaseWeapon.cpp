@@ -6,6 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "NiagaraComponent.h"
 #include "NiagaraFunctionLibrary.h"
+#include "Components/SpotLightComponent.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogWeapon, All, All);
 
@@ -17,6 +18,19 @@ ALMABaseWeapon::ALMABaseWeapon()
 
 	SkMeshWeaponComponent = CreateDefaultSubobject<USkeletalMeshComponent>("Weapon");
 	SetRootComponent(SkMeshWeaponComponent);
+
+	RightLight = CreateDefaultSubobject<USpotLightComponent>(TEXT("RightLight"));
+	LeftLight = CreateDefaultSubobject<USpotLightComponent>(TEXT("LeftLight"));
+
+	RightLight->SetIntensity(5000.0f);				  // яркость
+	RightLight->SetLightColor(FColor::White);	  // ÷вет света
+	RightLight->SetOuterConeAngle(45.0f);			  // ”гол внешнего конуса
+	RightLight->SetInnerConeAngle(30.0f);
+
+	LeftLight->SetIntensity(5000.0f);		  
+	LeftLight->SetLightColor(FColor::White); 
+	LeftLight->SetOuterConeAngle(45.0f);	  
+	LeftLight->SetInnerConeAngle(30.0f);
 }
 
 // Called when the game starts or when spawned
@@ -27,6 +41,16 @@ void ALMABaseWeapon::BeginPlay()
 	CurrentAmmoWeapon = DefaultAmmoWeapon;
 	GetWorldTimerManager().SetTimer(ShootPeriodTimer, this, &ALMABaseWeapon::Shoot, ShootPeriod, true);
 	GetWorldTimerManager().PauseTimer(ShootPeriodTimer);
+
+	if (SkMeshWeaponComponent)
+	{	
+		
+		RightLight->AttachToComponent(SkMeshWeaponComponent, FAttachmentTransformRules::SnapToTargetIncludingScale, RightLightSocketName);
+		LeftLight->AttachToComponent(SkMeshWeaponComponent, FAttachmentTransformRules::SnapToTargetIncludingScale, LeftLightSocketName);
+
+		RightLight->SetVisibility(false);
+		LeftLight->SetVisibility(false);
+	}
 }
 
 // Called every frame
@@ -185,4 +209,12 @@ void ALMABaseWeapon::MakeDamage(const FHitResult& HitResult)
 	if (!Controller)
 		return;
 	Enemy->TakeDamage(Damage, FDamageEvent(), Controller, this);
+}
+
+void ALMABaseWeapon::ChangeLight() 
+{
+	CheckLight = !CheckLight;
+
+	RightLight->SetVisibility(CheckLight);
+	LeftLight->SetVisibility(CheckLight);
 }

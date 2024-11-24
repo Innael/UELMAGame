@@ -9,6 +9,7 @@
 class USkeletalMeshComponent;
 class USoundWave;
 class UNiagaraSystem;
+class USpotLightComponent;
 
 DECLARE_MULTICAST_DELEGATE(FForcedRecharge)
 DECLARE_MULTICAST_DELEGATE(FAmmoChange)
@@ -65,7 +66,10 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
 	float Damage = FMD1;
 
-	void SetFireMode(int32 Value);		
+	void SetFireMode(int32 Value);
+
+	UFUNCTION(BlueprintCallable)
+	void ChangeLight();
 
 protected:
 	
@@ -78,8 +82,20 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
 	FAmmoWeapon DefaultAmmoWeapon{30, 0, true};
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Weapon")
+	USpotLightComponent* RightLight;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Weapon")
+	USpotLightComponent* LeftLight;
+
 	UPROPERTY(EditDefaultsOnly)
 	FName MuzzleSocketName = "Muzzle";
+
+	UPROPERTY(EditDefaultsOnly)
+	FName RightLightSocketName = "RightLightSocket";
+		
+	UPROPERTY(EditDefaultsOnly)
+	FName LeftLightSocketName = "LeftLightSocket";
 
 	FTimerHandle ShootPeriodTimer;
 
@@ -110,6 +126,8 @@ protected:
 	FString CurrAmmo = "30";
 
 	int CartridgeConsumption = 1;
+
+	bool CheckLight = false;
 	
 
 	virtual void BeginPlay() override;
@@ -123,6 +141,7 @@ protected:
 	
    void MakeDamage(const FHitResult& HitResult);	
 	
+   
 
 private:
 	FAmmoWeapon CurrentAmmoWeapon;

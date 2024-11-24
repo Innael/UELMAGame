@@ -131,3 +131,8 @@ void ULMAWeaponComponent::ChangeWeaponMode(int32 Value)
 	Weapon->SetFireMode(Value);	
 	FireModeChanged.Broadcast(Weapon->FireMode);
 }
+
+void ULMAWeaponComponent::LightOnOff() 
+{
+	Weapon->ChangeLight();
+}

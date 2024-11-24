@@ -108,6 +108,7 @@ void ALMADefaultCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 	PlayerInputComponent->BindAction("Reload", IE_Pressed, WeaponComponent, &ULMAWeaponComponent::Reload);
 	PlayerInputComponent->BindAction("FireModeMinus", IE_Pressed, this, &ALMADefaultCharacter::FireModeMinus);
 	PlayerInputComponent->BindAction("FireModePlus", IE_Pressed, this, &ALMADefaultCharacter::FireModePlus);
+	PlayerInputComponent->BindAction("Light", IE_Pressed, this, &ALMADefaultCharacter::SwitchLight);
 }
 
 void ALMADefaultCharacter::MoveForward(float Value)
@@ -233,3 +234,7 @@ void ALMADefaultCharacter::FireModePlus()
 	WeaponComponent -> ChangeWeaponMode(1);
 }
 
+void ALMADefaultCharacter::SwitchLight()
+{
+	WeaponComponent->LightOnOff();
+}
