@@ -102,6 +102,7 @@ private:
 
 	void FireModeMinus();
 
+	UFUNCTION(BlueprintCallable)
 	void SwitchLight();
 
 public:	
