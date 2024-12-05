@@ -18,7 +18,7 @@ ALMADamageActor::ALMADamageActor()
 
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>("StaticMesh");
 	StaticMesh->SetupAttachment(SphereComponent);
-	StaticMesh->SetRelativeScale3D(FVector(2.0f, 2.0f, 0.05f));
+	StaticMesh->SetRelativeScale3D(FVector(1.0f, 1.0f, 1.0f));
 	StaticMesh->SetRelativeLocation(FVector(0.0f, 0.0f, -4.0f));
 
 }
@@ -34,5 +34,5 @@ void ALMADamageActor::BeginPlay()
 void ALMADamageActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	UGameplayStatics::ApplyRadialDamage(GetWorld(), Damage, GetActorLocation(), SphereRadius, nullptr, {}, this, nullptr, false);
+	UGameplayStatics::ApplyRadialDamage(GetWorld(), Damage, GetActorLocation(), SphereRadius, nullptr, {}, this, nullptr, true);
 }

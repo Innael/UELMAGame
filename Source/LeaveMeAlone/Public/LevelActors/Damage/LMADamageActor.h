@@ -25,10 +25,10 @@ public:
 	UStaticMeshComponent* StaticMesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Damage")
-	float Damage = 5.0f;
+	float Damage = 1000.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Damage")
-	float SphereRadius = 100.0f;
+	float SphereRadius = 2000.0f;
 
 protected:
 	// Called when the game starts or when spawned
